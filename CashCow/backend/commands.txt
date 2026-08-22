@@ -1,0 +1,21 @@
+1. mkdir .\backend\app\models
+
+2. mkdir .\backend\scripts
+
+3. python -m venv .venv (reason we installing this is because if we don't it will 
+                      cause all the packages to download gloabely and it will cause problem 
+                      when trying to work on multiple projects and you will want the dependencies
+                      to be in the directory)
+
+4. .\.venv\Scripts\Activate.ps1
+4.5  (Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned) ; (& "c:\Users\wilva\Revature\Project\CashCow\backend\.venv\Scripts\Activate.ps1")
+
+5. New-Item -ItemType File -Force -Path app\__init__.py, scripts\__init__.py, requirements.txt | Out-Null       
+
+6. pip install "sqlalchemy[asyncio]" asyncpg (Download sqlalchemy module )
+
+
+Optional:   Python -m pip install --upgrade pip
+            psql -U postgres -c "DROP DATABASE robopulse_dev_scratch" (Drop database)
+            Remove-Item Env:DATABASE_URL -ErrorAction SilentlyContinue
+

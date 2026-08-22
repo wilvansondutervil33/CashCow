@@ -1,0 +1,1 @@
+from app.models import Atm, ATMStatus, CallStatus, CallPriority, Branch, DiagnosticReport, ServiceCall
