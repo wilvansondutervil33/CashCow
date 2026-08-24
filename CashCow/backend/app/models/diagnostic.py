@@ -10,7 +10,7 @@ from .base import Base
 if TYPE_CHECKING:
     from .call import ServiceCall
 
-class DiagnosticLog(Base):
+class DiagnosticReport(Base):
     __tablename__ = "diagnostic_reports"
 
     id: Mapped[int] = mapped_column(primary_key=True)
