@@ -7,8 +7,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 
 if TYPE_CHECKING:
-    from .operator import Operator
-    from .robot import Robot
+    from .atm import Atm
+    from .technician import Technician
 
 class Branch(Base):
     #setting the table name for the facility model in the database
@@ -21,6 +21,8 @@ class Branch(Base):
     capacity: Mapped[int] = mapped_column(Integer)
     supervisor_id: Mapped[int] = mapped_column(Integer)
 
+    atm: Mapped["Atm"] = relationship(back_populates="branches")
+    technician: Mapped["Technician"] = relationship(back_populates="branches")
 
     def __repr__(self) -> str:
         return (f"Branch(id={self.id}, name={self.name!r}, "

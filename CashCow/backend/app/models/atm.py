@@ -1,13 +1,16 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 from decimal import Decimal
-from sqlalchemy import Integer, String, Numeric, CheckConstraint
+from sqlalchemy import Integer, String, Numeric, CheckConstraint, ForeignKey
 from sqlalchemy import Enum as SqlEnum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from .base import Base
 from .enums import ATMStatus
 
+if TYPE_CHECKING:
+    from .atm import Atm
+    from .branch import Branch
 
 class Atm(Base):
 
@@ -31,8 +34,10 @@ class Atm(Base):
         ),
         default= ATMStatus.OFFLINE,
     )
-    facility_id: Mapped[int] = mapped_column(Integer)
+    branch_id: Mapped[int] = mapped_column(Integer, ForeignKey("branches.id"))
 
+    branch: Mapped["Branch"] = relationship(back_populates="atms")
+    call: Mapped["Atm"] = relationship(back_populates="atms")
 
     def needs_maintenance(self) -> bool:
         return self.status == ATMStatus.MAINTENANCE
