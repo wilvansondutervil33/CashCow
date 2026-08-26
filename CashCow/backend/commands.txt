@@ -17,6 +17,12 @@
 
 7. pip install "fastapi[standard]" ( Work we API side of backend)
 
+8. fasatapi dev app/main.py (Start up app)
+
+9. python -m pip install bcrypt pyjwt (download password and hashing packages)
+
+10. python -m scripts.day3_create_tables (run script to create tables)
+
 
 
 
