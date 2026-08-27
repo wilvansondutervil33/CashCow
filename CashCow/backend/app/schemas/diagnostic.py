@@ -8,3 +8,6 @@ class DiscrepancyRead(BaseModel):
     notes: str
     timestamp: datetime
     model_config = ConfigDict(from_attributes=True)
+
+class DiscrepancyCreate(DiscrepancyRead):
+    ""

@@ -24,3 +24,9 @@ class ATMRead(ATMBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+class ATMUpdate(ATMRead):
+    """Shape of the Request Body for PUT /robots"""
+
+class ATMDelete(BaseModel):
+    id: int

@@ -23,6 +23,14 @@
 
 10. python -m scripts.day3_create_tables (run script to create tables)
 
+11. winget install OpenJS.NodeJS.LTS (Install node js outside of backend)
+
+12. psql -U postgres -c "CREATE DATABASE database-CashCow;" (create DB)
+
+13. psql -U postgres -d database-name (connect to DB)
+
+14. \i <file name .sql> (to run sql file)
+
 
 
 
