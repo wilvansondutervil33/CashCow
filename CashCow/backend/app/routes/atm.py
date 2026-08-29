@@ -56,7 +56,7 @@ async def create_robot(payload: ATMCreate, db: AsyncSession = Depends(get_db),
     return atm
 
 @router.put("/{atm_id}", response_model=ATMRead, status_code=status.HTTP_202_ACCEPTED)
-async def update_robot(atm_id: int, payload: ATMCreate, db: AsyncSession = Depends(get_db),
+async def update_robot(atm_id: int, payload: ATMUpdate, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))) -> Atm:
     atm = await db.get(Atm, atm_id)
     atm.cash_level = payload.cash_level
@@ -66,7 +66,7 @@ async def update_robot(atm_id: int, payload: ATMCreate, db: AsyncSession = Depen
     await db.refresh(atm)
     return atm
 
-@router.delete("/{atm_id}", response_model=ATMDelete, status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{atm_id}", response_model=ATMDelete, status_code=status.HTTP_201_CREATED)
 async def delete_robot(atm_id: int, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))):
     atm = await db.get(Atm, atm_id)

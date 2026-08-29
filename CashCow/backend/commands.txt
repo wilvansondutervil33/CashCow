@@ -31,6 +31,15 @@
 
 14. \i <file name .sql> (to run sql file)
 
+AWS 
+
+15. winget install Amazon.AWSCLI
+
+16. psql -h robopulse-2478.cv8s0o2ayt2o.us-east-2.rds.amazonaws.com -U postgres -d postgres                                       
+
+17. psql -h <rds-endpoint> -U <master-username> -d robopulse -f ..\db\sql\seed.sql
+
+18. aws s3 mb s3://robopulse-diagnostics-<your initials or a random number> --region us-east-2
 
 
 

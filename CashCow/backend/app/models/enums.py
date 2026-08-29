@@ -2,7 +2,7 @@ from enum import Enum
 
 class ATMStatus(str, Enum):
     OPERATIONAL = "Operational"
-    LOW-CASH = "Low-Cash"
+    LOW_CASH = "Low-Cash"
     MAINTENANCE = "Maintenance"
     OFFLINE = "Offline"
 
@@ -13,7 +13,7 @@ class CallPriority(str, Enum):
 
 class CallStatus(str, Enum):
     PENDING = "Pending"
-    IN-PROGRESS = "In-Progress"
+    IN_PROGRESS = "In-Progress"
     COMPLETED = "Completed"
     FAILED = "Failed"
 
