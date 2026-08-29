@@ -6,6 +6,7 @@ CREATE TYPE call_status AS ENUM('Pending', 'In-Progress', 'Completed', 'Failed')
 CREATE TABLE branches (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
+    location_region VARCHAR(100) NOT NULL,
     capacity INTEGER NOT NULL,
     supervisor_id INTEGER NOT NULL
 );
@@ -19,9 +20,9 @@ CREATE TABLE technicians (
 CREATE TABLE atms (
     id SERIAL PRIMARY KEY,
     serial_number VARCHAR(50) NOT NULL UNIQUE,
-    model INTEGER NOT NULL,
+    model VARCHAR(100) NOT NULL,
     status atm_status NOT NULL DEFAULT 'Offline',
-    cash_level NUMERIC(5,2) NOT NULL CHECK (cash_level BETWEEN 0 AND 10000),  
+    cash_level NUMERIC(7,2) NOT NULL CHECK (cash_level BETWEEN 0 AND 10000),  
     branch_id INTEGER NOT NULL REFERENCES branches(id)
 );
 
