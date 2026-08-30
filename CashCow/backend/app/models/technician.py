@@ -25,8 +25,8 @@ class Technician(Base):
     branch_id: Mapped[int] = mapped_column(Integer, ForeignKey("branches.id"))
 
     branch: Mapped["Branch"] = relationship(back_populates="technicians")
-    call: Mapped[list["ServiceCall"]] = relationship(back_populates="technician")
+    servicecalls: Mapped[list["ServiceCall"]] = relationship(back_populates="technician")
 
     def __repr__(self) -> str:
             return (f"Operator(id={self.id}, name={self.name!r}, "
-                    f"facility_id={self.facility_id})")
+                    f"branch_id={self.branch_id})")

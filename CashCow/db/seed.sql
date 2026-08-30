@@ -28,6 +28,8 @@ INSERT INTO diagnostic_reports(call_id, file_url, notes) VALUES
     (1, 's3://robopulse-diagnostics/rx1001-001.pdf', 'Vibration sensor reading normal');
 
 
+
+
 SELECT setval('branches_id_seq', (SELECT MAX(id) FROM branches));
 SELECT setval('technicians_id_seq', (SELECT MAX(id) FROM technicians));
 SELECT setval('atms_id_seq', (SELECT MAX(id) FROM atms));

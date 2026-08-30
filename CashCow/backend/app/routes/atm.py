@@ -66,10 +66,11 @@ async def update_robot(atm_id: int, payload: ATMUpdate, db: AsyncSession = Depen
     await db.refresh(atm)
     return atm
 
-@router.delete("/{atm_id}", response_model=ATMDelete, status_code=status.HTTP_201_CREATED)
+@router.delete("/{atm_id}", response_model=ATMDelete, status_code=status.HTTP_202_ACCEPTED)
 async def delete_robot(atm_id: int, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))):
     atm = await db.get(Atm, atm_id)
     db.delete(atm)
     await db.commit()
     await db.refresh(atm)
+    return atm

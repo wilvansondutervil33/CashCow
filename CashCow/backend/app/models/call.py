@@ -12,8 +12,8 @@ from .enums import CallPriority, CallStatus
 
 if TYPE_CHECKING:
     from .atm import Atm
-    from .diagnostic import DiagnosticReport
-    from .technician import Technician
+from .diagnostic import DiagnosticReport
+from .technician import Technician
 
 class ServiceCall(Base):
     __tablename__ = "servicecalls"
@@ -36,10 +36,10 @@ class ServiceCall(Base):
         default=CallStatus.PENDING,
     )
     atm_id: Mapped[int]= mapped_column(Integer, ForeignKey("atms.id"))
-    technician_id: Mapped[int]= mapped_column(Integer, ForeignKey("technician.id"))
+    technician_id: Mapped[int]= mapped_column(Integer, ForeignKey("technicians.id"))
 
     #Left: singular because this is the 'one' side of the relationship
     #Right: plural because this is the 'to-many' side of the relationship
     atm: Mapped["Atm"] = relationship(back_populates="servicecalls")
     technician: Mapped["Technician"] = relationship(back_populates="servicecalls")
-    diagnosticreport: Mapped[list["DiagnosticReport"]] = relationship(back_populates="servicecalls")
+    diagnostic_reports: Mapped[list["DiagnosticReport"]] = relationship(back_populates="servicecall")

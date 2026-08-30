@@ -10,7 +10,7 @@ class ATMBase(BaseModel):
     serial_number: str = Field(min_length=1, max_length=50)
     model: str = Field(min_length=1, max_length=100)
     cash_level: Decimal = Field(ge=0, le=10000)
-    facility_id: int
+    branch_id: int
     status: ATMStatus = ATMStatus.OFFLINE
 
 
@@ -28,5 +28,5 @@ class ATMRead(ATMBase):
 class ATMUpdate(ATMRead):
     """Shape of the Request Body for PUT /robots"""
 
-class ATMDelete(BaseModel):
+class ATMDelete(ATMBase):
     id: int
