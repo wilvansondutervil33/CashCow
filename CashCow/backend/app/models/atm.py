@@ -8,9 +8,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .base import Base
 from .enums import ATMStatus
 
-#if TYPE_CHECKING:
-from .call import ServiceCall
-from .branch import Branch
+if TYPE_CHECKING:
+    from .call import ServiceCall
+    from .branch import Branch
 
 class Atm(Base):
 

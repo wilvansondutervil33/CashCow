@@ -17,7 +17,7 @@ class DiagnosticReport(Base):
     call_id: Mapped[int] = mapped_column(Integer, ForeignKey("servicecalls.id"))
     file_url: Mapped[str] = mapped_column(Text)
     notes: Mapped[str | None] = mapped_column(Text, nullable=True)
-    timestamp: Mapped[datetime] = mapped_column(DateTime, server_default= func.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime, server_default= func.now())
     #server_default=func.now() sets the default value of the created_at column
     #to the current timestamp when a new record is inserted into the database
 

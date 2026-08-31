@@ -12,8 +12,6 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(String(50), unique=True, index=True)
-    #for security reasons, we do not want to store the raw password in the database. Instead
-    #we want to store a hashed version of the password
     hashed_password: Mapped[str] = mapped_column(String(255))
     role: Mapped[UserRole] = mapped_column(
         SqlEnum(

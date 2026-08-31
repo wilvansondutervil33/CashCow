@@ -47,7 +47,11 @@ async def create_branch(payload: BranchCreate, db: AsyncSession = Depends(get_db
 async def update_branch(branch_id: int, payload: BranchUpdate, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))) -> Branch:
     
-    branch = Branch(**payload.model_dump())
+    branch = await db.get(Branch, branch_id)
+    branch.name = payload.name
+    branch.location_region = payload.location_region
+    branch.capacity = payload.capacity
+    branch.supervisor_id = payload.supervisor_id
     db.add(branch)
     await db.commit()
     await db.refresh(branch)

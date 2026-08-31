@@ -47,7 +47,11 @@ async def create_call(payload: CallCreate, db: AsyncSession = Depends(get_db),
 async def update_call(call_id: int, payload: CallUpdate, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))) -> ServiceCall:
     
-    call = ServiceCall(**payload.model_dump())
+    call = await db.get(ServiceCall, call_id)
+    call.title = payload.title
+    call.priority = payload.priority
+    call.status = payload.status
+    call.technician_id = payload.technician_id
     db.add(call)
     await db.commit()
     await db.refresh(call)

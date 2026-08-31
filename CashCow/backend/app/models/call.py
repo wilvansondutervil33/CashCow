@@ -12,8 +12,8 @@ from .enums import CallPriority, CallStatus
 
 if TYPE_CHECKING:
     from .atm import Atm
-from .diagnostic import DiagnosticReport
-from .technician import Technician
+    from .diagnostic import DiagnosticReport
+    from .technician import Technician
 
 class ServiceCall(Base):
     __tablename__ = "servicecalls"

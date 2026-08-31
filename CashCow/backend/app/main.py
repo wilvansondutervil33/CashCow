@@ -1,8 +1,8 @@
 from app.models import Atm, ATMStatus, CallStatus, CallPriority, Branch, DiagnosticReport, ServiceCall
 
 from fastapi import FastAPI
-
-from app.routes import atm, auth, branch, call, diagnostic
+from fastapi.middleware.cors import CORSMiddleware
+from app.routes import atm, auth, branch, call, diagnostic, business
 
 
 #set up the FastAPI application with a title, description, and version. 
@@ -24,6 +24,7 @@ app.include_router(branch.router)
 app.include_router(call.router)
 app.include_router(diagnostic.router)
 app.include_router(auth.router) 
+app.include_router(business.router) 
 
 #A simple health check endpoint to verify that the API is running.
 @app.get("/health", tags=["health"])

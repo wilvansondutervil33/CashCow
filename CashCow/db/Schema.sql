@@ -41,5 +41,5 @@ CREATE TABLE diagnostic_reports (
     call_id INTEGER NOT NULL REFERENCES servicecalls(id),
     file_url TEXT NOT NULL,
     notes TEXT,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW() 
 );

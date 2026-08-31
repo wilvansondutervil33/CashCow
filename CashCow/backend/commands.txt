@@ -17,7 +17,7 @@
 
 7. pip install "fastapi[standard]" ( Work we API side of backend)
 
-8. fasatapi dev app/main.py (Start up app)
+8. fastapi dev app/main.py (Start up app)
 
 9. python -m pip install bcrypt pyjwt (download password and hashing packages)
 
@@ -25,7 +25,7 @@
 
 11. winget install OpenJS.NodeJS.LTS (Install node js outside of backend)
 
-12. psql -U postgres -c "CREATE DATABASE database-CashCow;" (create DB)
+12. psql -U postgres -c "CREATE DATABASE database-cashcow;" (create DB)
 
 13. psql -U postgres -d database-name (connect to DB)
 
@@ -41,11 +41,44 @@ AWS
 
 18. aws s3 mb s3://robopulse-diagnostics-<your initials or a random number> --region us-east-2
 
+AWS backend
+19. pip install magnum
 
+DOCKER
+20. winget install Docker.DockerDesktop
 
+21. docker run --rm -v ${PWD}:/var/task -w /var/task public.ecr.aws/sam/build-python3.12 `
 
+22. pip install -r requirements-lambda.txt -t package
 
+23. Get-ChildItem package -Filter "pydantic-*"
 
+24. Copy-Item -Recurse app package\app
+
+25. Copy-Item lambda_handler.py package\lambda_handler.py
+
+26. Compress-Archive -Path package\* -DestinationPath lambda_deployment.zip -Force
+
+27. aws lambda create-function `
+  --function-name robopulse-api `
+  --runtime python3.12 `
+  --architectures x86_64 `
+  --role <arn-of-robopulse-lambda-execution-role> `
+  --handler lambda_handler.handler `
+  --zip-file fileb://lambda_deployment.zip `
+  --timeout 30 `
+  --memory-size 256 `
+  --region us-east-2
+
+28. Compress-Archive -Path package\* -DestinationPath lambda_deployment.zip -Force
+
+29. python -c "import secrets; print(secrets.token_hex(32))"
+
+30. aws lambda update-function-configuration --function-name robopulse-api --environment file://lambda-env.json
+
+31. aws s3 sync dist/ s3://robopulse-frontend-km2478 --delete
+
+32. aws lambda update-function-code --function-name <your lamba name> --zip-file fileb://lambda_deployment.zip
 
 Optional:   Python -m pip install --upgrade pip
             psql -U postgres -c "DROP DATABASE robopulse_dev_scratch" (Drop database)

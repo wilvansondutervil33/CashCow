@@ -35,7 +35,7 @@ async def get_report(report_id: int, db: AsyncSession = Depends(get_db), _: User
 #our POST /robots endpoint, which creates a new robot.
 @router.post("", response_model=DiscrepancyRead, status_code=status.HTTP_201_CREATED)
 async def create_call(payload: DiscrepancyCreate, db: AsyncSession = Depends(get_db),
-                       _: User = Depends(require_role([UserRole.OPERATION_ADMIN, UserRole.FIELD_TECHNICIAN]))) -> DiagnosticReport:
+                       _: User = Depends(require_role(UserRole.OPERATION_ADMIN, UserRole.FIELD_TECHNICIAN))) -> DiagnosticReport:
     report = DiagnosticReport(**payload.model_dump())
     db.add(report)
     await db.commit()
