@@ -2,7 +2,8 @@ from app.models import Atm, ATMStatus, CallStatus, CallPriority, Branch, Diagnos
 
 from fastapi import FastAPI
 
-from app.routes import atm, auth
+from app.routes import atm, auth, branch, call, diagnostic
+
 
 #set up the FastAPI application with a title, description, and version. 
 # This metadata is used in the automatically generated OpenAPI documentation.
@@ -19,7 +20,9 @@ app = FastAPI(
 #include the /robots router in the FastAPI application. This means that all routes defined
 # in the robots router will be available under the /robots path.
 app.include_router(atm.router)
-#app.include_router(missions.router)
+app.include_router(branch.router)
+app.include_router(call.router)
+app.include_router(diagnostic.router)
 app.include_router(auth.router) 
 
 #A simple health check endpoint to verify that the API is running.

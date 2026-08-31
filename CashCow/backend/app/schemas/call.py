@@ -8,9 +8,12 @@ class CallRead(BaseModel):
     technician_id: int
     model_config = ConfigDict(from_attributes=True)
 
+class CallCreate(CallRead):
+    ""
+    
 class CallUpdate(CallRead):
     ""
     id: int
 
-class CallDelete(BaseModel):
+class CallDelete(CallRead):
     id: int

@@ -23,7 +23,7 @@ class Branch(Base):
 
     atms: Mapped[list["Atm"]]= relationship(back_populates="branch")
     technicians: Mapped[list["Technician"]] = relationship(back_populates="branch")
-
+ 
     def __repr__(self) -> str:
         return (f"Branch(id={self.id}, name={self.name!r}, "
                 f"region={self.location_region!r})")

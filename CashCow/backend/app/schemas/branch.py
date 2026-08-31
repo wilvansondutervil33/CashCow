@@ -24,5 +24,5 @@ class BranchRead(BranchBase):
 class BranchUpdate(BranchRead):
     "PUT request"
 
-class BranchDelete(BaseModel):
+class BranchDelete(BranchBase):
     id: int

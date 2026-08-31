@@ -3,9 +3,9 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.dependencies import get_db, require_role
+from app.dependencies import get_db, require_role, get_current_user
 from app.models import User, UserRole
-from app.schemas.users import Token, UserCreate, UserRead
+from app.schemas.users import Token, UserCreate, UserRead, UserDelete, UserUpdate
 from app.security import create_access_token, hash_password, verify_password
 
 
@@ -59,6 +59,46 @@ async def register_user(
 
     #add that new user object to the db
     db.add(user)
+    await db.commit()
+    await db.refresh(user)
+    return user
+
+#our GET /robots endpoint, which returns a list of robots, optionally filtered by battery level.
+@router.get("", response_model=list[UserRead])
+async def list_users(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)) -> list[User]:
+    
+    statement = select(User)
+
+    result = await db.execute(statement)
+    return list(result.scalars().all())
+
+@router.get("/{user_id}", response_model=UserRead)
+async def get_user(user_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)) -> User:
+    user = await db.get(User, user_id)
+    if user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"User {user_id} not found",
+        )
+    return user
+
+@router.put("/{user_id}", response_model=UserRead, status_code=status.HTTP_202_ACCEPTED)
+async def update_user(user_id: int, payload: UserUpdate, db: AsyncSession = Depends(get_db),
+                       _: User = Depends(require_role(UserRole.OPERATION_ADMIN))) -> User:
+    
+    user = await db.get(User, user_id)
+    user.username = payload.username
+    user.role = payload.role
+    db.add(user)
+    await db.commit()
+    await db.refresh(user)
+    return user
+
+@router.delete("/{user_id}", response_model=UserDelete, status_code=status.HTTP_202_ACCEPTED)
+async def delete_user(user_id: int, db: AsyncSession = Depends(get_db),
+                       _: User = Depends(require_role(UserRole.OPERATION_ADMIN))):
+    user = await db.get(User, user_id)
+    db.delete(user)
     await db.commit()
     await db.refresh(user)
     return user

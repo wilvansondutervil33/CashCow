@@ -24,5 +24,5 @@ class DiagnosticReport(Base):
     servicecall: Mapped["ServiceCall"] = relationship(back_populates="diagnostic_reports")
 
     def __repr__(self) -> str:
-        return (f"DiagnosticReport(id={self.id}, mission_id={self.mission_id}, "
+        return (f"DiagnosticReport(id={self.id}, mission_id={self.call_id}, "
                 f"file_url={self.file_url!r})")

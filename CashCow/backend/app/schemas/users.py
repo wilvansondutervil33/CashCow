@@ -16,8 +16,11 @@ class UserRead(UserBase):
     model_config = ConfigDict(from_attributes=True)
 
 class UserUpdate(UserRead):
-    "Update role"
+    "Update User"
 
+class UserDelete(UserRead):
+    "Delete User"
+    
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
