@@ -59,7 +59,7 @@ async def reliability_metrics(db: AsyncSession = Depends(get_db), _: User = Depe
                     ), Float) / 
                     cast(func.count(ServiceCall.id).filter(
                         ServiceCall.status == 'Failed'
-                    ), Float) > 1.0
+                    ), Float) >= 1.0
                 )
                 
             )
