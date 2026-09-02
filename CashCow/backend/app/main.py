@@ -17,8 +17,14 @@ app = FastAPI(
     version="0.1.0",
 )
 
-#include the /robots router in the FastAPI application. This means that all routes defined
-# in the robots router will be available under the /robots path.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins= ["http://localhost:5173"],
+    allow_credentials= True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+#include the /atm router in the FastAPI application. This means that all routes defined
 app.include_router(atm.router)
 app.include_router(branch.router)
 app.include_router(call.router)

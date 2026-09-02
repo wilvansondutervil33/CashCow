@@ -59,7 +59,10 @@ async def create_robot(payload: ATMCreate, db: AsyncSession = Depends(get_db),
 async def update_robot(atm_id: int, payload: ATMUpdate, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))) -> Atm:
     atm = await db.get(Atm, atm_id)
+    atm.serial_number = payload.serial_number
+    atm.model = payload.model
     atm.cash_level = payload.cash_level
+    atm.branch_id = payload.branch_id
     atm.status = payload.status
     db.add(atm)
     await db.commit()
