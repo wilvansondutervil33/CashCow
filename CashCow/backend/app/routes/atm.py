@@ -1,7 +1,7 @@
 from decimal import Decimal
-
+from fastapi.responses import Response
 from fastapi import APIRouter, Depends, HTTPException, Query, status
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependencies import get_db, get_current_user, require_role
@@ -69,11 +69,17 @@ async def update_robot(atm_id: int, payload: ATMUpdate, db: AsyncSession = Depen
     await db.refresh(atm)
     return atm
 
-@router.delete("/{atm_id}", response_model=ATMDelete, status_code=status.HTTP_202_ACCEPTED)
+@router.delete("/{atm_id}",  status_code=status.HTTP_204_NO_CONTENT)
 async def delete_robot(atm_id: int, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))):
     atm = await db.get(Atm, atm_id)
-    db.delete(atm)
+    #atm = (delete(Atm).where(Atm.id == atm_id))
+    if atm is None:
+        raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail=f"ATM {atm} not found",
+        )
+    await db.delete(atm)
     await db.commit()
-    await db.refresh(atm)
-    return atm
+    await db.refresh()
+    return Response(status_code=204, content = atm)

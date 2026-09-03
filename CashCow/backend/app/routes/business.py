@@ -11,6 +11,7 @@ from app.schemas.branch import BranchRead
 from app.schemas.atm import ATMRead
 from app.schemas.call import CallRead
 from app.schemas.technician import TechnicianRead
+from app.schemas.business import MetricsBase
 
 #our FastAPI router for the /robots endpoints. The prefix argument means that
 #  all routes defined in this router will be prefixed with /robots, and the 
@@ -45,27 +46,22 @@ async def find_low_cash_atms(db: AsyncSession = Depends(get_db), _: User = Depen
     result = await db.execute(statement)
     return list(result.scalars().all())
 
-@router.get("/metrics", response_model=list[CallRead])
-async def reliability_metrics(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)) -> list[ServiceCall]:
-    #need fixing
+@router.get("/metrics", response_model=list[MetricsBase])
+async def reliability_metrics(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)):
 
     statement = (
-                select(ServiceCall)
+                select(Atm.model.label("model"),
+                       func.count(ServiceCall.id).filter(ServiceCall.status == 'Completed').label("Completed"),
+                       func.count(ServiceCall.id).filter(ServiceCall.status == 'Failed').label("Failed")
+                       )
                 .join(Atm, Atm.id == ServiceCall.atm_id)
                 .group_by(Atm.model)
-                .having(
-                    cast(func.count(ServiceCall.id).filter(
-                        ServiceCall.status == 'Completed'
-                    ), Float) / 
-                    cast(func.count(ServiceCall.id).filter(
-                        ServiceCall.status == 'Failed'
-                    ), Float) >= 1.0
-                )
-                
             )
         
     result = await db.execute(statement)
-    return list(result.scalars().all())
+    rows = result.all()
+    return list(MetricsBase(model=row.model, completed=row.Completed, failed=row.Failed)
+                for row in rows)
 
 @router.get("/flags", response_model=list[BranchRead])
 async def maintenance_flags(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)) -> list[Branch]:
