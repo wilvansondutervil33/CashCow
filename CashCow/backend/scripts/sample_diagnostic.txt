@@ -1,0 +1,3 @@
+Vibration sensor: nominal
+Cash cycle count: 142
+last calibration: within tolerance

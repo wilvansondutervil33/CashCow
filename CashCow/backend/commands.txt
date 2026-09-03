@@ -34,15 +34,22 @@
 AWS 
 
 15. winget install Amazon.AWSCLI
+    aws configure sso :
+                        SSO start URL: https://identitycenter.amazonaws.com/ssoins-6684b2e5c47ba8ad
+                        SSO Region: us-east-2
+                        Default client Region: us-east-2
+                        CLI output format: json
 
-16. psql -h robopulse-2478.cv8s0o2ayt2o.us-east-2.rds.amazonaws.com -U postgres -d postgres                                       
+    $env:DATABASE_URL = "postgresql+asyncpg://postgres:password@cashcow-2478.cv8s0o2ayt2o.us-east-2.rds.amazonaws.com/cashcow"
+16. psql -h cashcow-2478.cv8s0o2ayt2o.us-east-2.rds.amazonaws.com -U postgres -d postgres                                       
 
-17. psql -h <rds-endpoint> -U <master-username> -d robopulse -f ..\db\sql\seed.sql
+17. psql -h cashcow-2478.cv8s0o2ayt2o.us-east-2.rds.amazonaws.com -U postgres -d cashcow -f ..\db\seed.sql
 
-18. aws s3 mb s3://robopulse-diagnostics-<your initials or a random number> --region us-east-2
+18. aws s3 mb s3://cashcow-diagnostics-wd2478 --region us-east-2
 
 AWS backend
 19. pip install magnum
+
 
 DOCKER
 20. winget install Docker.DockerDesktop
@@ -60,10 +67,10 @@ DOCKER
 26. Compress-Archive -Path package\* -DestinationPath lambda_deployment.zip -Force
 
 27. aws lambda create-function `
-  --function-name robopulse-api `
+  --function-name cashcow-api `
   --runtime python3.12 `
   --architectures x86_64 `
-  --role <arn-of-robopulse-lambda-execution-role> `
+  --role arn:aws:iam::207283262194:role/cashcow-lambda-execution-role-2478 `
   --handler lambda_handler.handler `
   --zip-file fileb://lambda_deployment.zip `
   --timeout 30 `
@@ -74,11 +81,20 @@ DOCKER
 
 29. python -c "import secrets; print(secrets.token_hex(32))"
 
-30. aws lambda update-function-configuration --function-name robopulse-api --environment file://lambda-env.json
+30. aws lambda update-function-configuration --function-name cashcow-api --environment file://lambda-env.json
 
-31. aws s3 sync dist/ s3://robopulse-frontend-km2478 --delete
+31. aws s3 sync dist/ s3://cashcow-frontend-wd2478 --delete
 
 32. aws lambda update-function-code --function-name <your lamba name> --zip-file fileb://lambda_deployment.zip
+
+33. curl https://jr3cmm3tw5aulu7635v2i3wv7i0iraqg.lambda-url.us-east-2.on.aws/health
+
+34. aws s3 mb s3://cashcow-frontend-wd2478 --region us-east-2
+
+35. Remove-Item -Recurse -Force package\app -ErrorAction SilentlyContinue
+    Copy-Item -Recurse app package\app
+    Compress-Archive -Path package\* -DestinationPath lambda_deployment.zip -Force
+    aws lambda update-function-code --function-name cashcow-api --zip-file fileb://lambda_deployment.zip
 
 Optional:   Python -m pip install --upgrade pip
             psql -U postgres -c "DROP DATABASE robopulse_dev_scratch" (Drop database)
