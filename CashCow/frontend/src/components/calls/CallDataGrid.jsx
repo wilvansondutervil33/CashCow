@@ -9,35 +9,37 @@ import apiClient from '../../api/client.js';
 
 //defines our DataGrid columns and maps them to our backend API response data
 const baseColumns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'serial_number', headerName: 'Serial Number', width: 150 },
-  { field: 'model', headerName: 'Model', width: 160 },
-  { field: 'cash_level', headerName: 'CASH', width: 120, type: 'number' },
+  { field: 'id', headerName: 'ID', width: 70 , type: 'number'},
+  { field: 'title', headerName: 'Title', width: 150 },
+  { field: 'priority', headerName: 'Priority', width: 160 },
+  { field: 'atm_id', headerName: 'Atm ID', width: 120, type: 'number' },
   { field: 'status', headerName: 'Status', width: 130 },
-  { field: 'branch_id', headerName: 'Branch ID', width: 110, type: 'number' }]
+  { field: 'technician_id', headerName: 'Technician ID', width: 110, type: 'number' }]
 
 
 
 
 
-const STATUS_OPTIONS = ['Operational', 'Low-Cash', 'Maintenance', 'Offline']
+const STATUS_OPTIONS = ['Pending', 'In-Progress', 'Completed', 'Failed']
+const PRIORITY_OPTIONS = ['Low', 'Medium', 'Critical']
 
 //local state variables for tracking table rows, loading status, and network errors
 //to track the lifecycle of the async API request so the UI can render appropriately
-function AtmDataGrid({ onSuccess ,role}) {
-  const [atms, setAtms] = useState([]);
+function CallDataGrid({ onSuccess ,role}) {
+  const [calls, setCalls] = useState([]);
   const [id, setId] = useState(0)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [adddialogOpen, setaddDialogOpen] = useState(false);
   const [editdialogOpen, seteditDialogOpen] = useState(false);
   const [formValues, setFormValues] = useState({
-    serial_number: '',
-    model: '',
-    cash_level: '',
-    branch_id: '',
-    status: 'Offline',
+    title: '',
+    priority: 'Low',
+    atm_id: '',
+    technician_id: '',
+    status: 'Pending',
   });
+
 
   const actionColumns = [
   {field: 'actions', type: 'actions', headerName: 'Actions', width: 100,
@@ -48,10 +50,10 @@ function AtmDataGrid({ onSuccess ,role}) {
         onClick={() => {
             setId(params.row.id)
             setFormValues({
-                            serial_number: params.row.serial_number,
-                            model: params.row.model,
-                            cash_level: params.row.cash_level,
-                            branch_id: params.row.branch_id,
+                            title: params.row.title,
+                            priority: params.row.priority,
+                            atm_id: params.row.atm_id,
+                            technician_id: params.row.technician_id,
                             status: params.row.status,
                         });
             seteditDialogOpen(true)}}
@@ -67,12 +69,13 @@ function AtmDataGrid({ onSuccess ,role}) {
   const columns = role == 'Operations Admin' ? [...baseColumns, ...actionColumns] : baseColumns;
 
   //React effect hook that runs our async fetch 
-  async function fetchAtms() {
+  async function fetchCalls() {
       setLoading(true);
       try {
-        const response = await apiClient.get('/atms');
-        setAtms(response.data);
+        const response = await apiClient.get('/servicecalls');
+        setCalls(response.data);
         setError(null);
+        console.log(response)
       } catch {
           setError('Could not load fleet data.');
       } finally {
@@ -81,7 +84,7 @@ function AtmDataGrid({ onSuccess ,role}) {
     }
 
      useEffect(() => {
-      fetchAtms();
+      fetchCalls();
     }, []);
 
     const handleFieldChange = (field) => (event) => {
@@ -90,15 +93,15 @@ function AtmDataGrid({ onSuccess ,role}) {
 
     const handleCreate = async() => {
         try {
-            await apiClient.post('/atms', {
+            await apiClient.post('/servicecalls', {
                 ...formValues,
-            cash_level: Number(formValues.cash_level),
-            branch_id: Number(formValues.branch_id),
+            atm_id: Number(formValues.atm_id),
+            technician_id: Number(formValues.technician_id),
             });
             setaddDialogOpen(false);
-            setFormValues({serial_number: '', model: '', cash_level: '', branch_id: '', status: 'Offline'});
-            onSuccess(`Atm ${formValues.serial_number} created.`);
-            await fetchAtms(); //see the table data refreshed with the new robot
+            setFormValues({title: '', priority: 'Low', atm_id: '', technician_id: '', status: 'Pending'});
+            onSuccess(`Call ${formValues.title} created.`);
+            await fetchCalls(); //see the table data refreshed with the new robot
         } catch {
             //a real app would surface this inline in the dialog
         }
@@ -106,28 +109,28 @@ function AtmDataGrid({ onSuccess ,role}) {
 
     const handleEdit = async() => {
         try {
-            await apiClient.put(`/atms/${id}`, {
+            await apiClient.put(`/servicecalls/${id}`, {
                 ...formValues,
             id : id,
-            cash_level: Number(formValues.cash_level),
-            branch_id: Number(formValues.branch_id),
+            atm_id: Number(formValues.atm_id),
+            technician_id: Number(formValues.technician_id),
             });
             seteditDialogOpen(false);
             setId(0)
-            setFormValues({serial_number: '', model: '', cash_level: '', branch_id: '', status: 'Offline'});
-            onSuccess(`Atm ${formValues.serial_number} Edited.`);
-            await fetchAtms(); //see the table data refreshed with the new robot
+            setFormValues({title: '', priority: 'Low', atm_id: '', technician_id: '', status: 'Pending'});
+            onSuccess(`Call ${formValues.title} Edited.`);
+            await fetchCalls(); //see the table data refreshed with the new robot
         } catch (e){
             console.log(e.response?.data);//a real app would surface this inline in the dialog
         }
     }
 
-    const handleDelete = async(atmid) => {
+    const handleDelete = async(callid) => {
         try {
-            await apiClient.delete(`/atms/${atmid}`);
+            await apiClient.delete(`/servicecalls/${callid}`);
 
-            onSuccess(`Atm ${formValues.serial_number} Deleted.`);
-            await fetchAtms(); //see the table data refreshed with the new robot
+            onSuccess(`Call ${formValues.title} Deleted.`);
+            await fetchCalls(); //see the table data refreshed with the new robot
         } catch (e){
             console.log(e.response?.data);//a real app would surface this inline in the dialog
         }
@@ -141,21 +144,25 @@ function AtmDataGrid({ onSuccess ,role}) {
   //loads data grid component if all goes well
   return (
     <Box>
-       {role == 'Operations Admin' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Atm</Button>)}
+       {role == 'Operations Admin' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Service Call</Button>)}
     <Box sx={{ height: 400, width: '100%' }}>
-      <DataGrid rows={atms} columns={columns} getRowId={(row) => row.id} />
+      <DataGrid rows={calls} columns={columns} getRowId={(row) => row.id} />
     </Box>
 
     <Dialog open={adddialogOpen} onClose={() => setaddDialogOpen(false)}>
-      <DialogTitle>Add New Atm</DialogTitle>
+      <DialogTitle>Add New Service Call</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1, minWidth: 300}}>
-          <TextField label="Serial Number" value={formValues.serial_number} onChange={handleFieldChange('serial_number')} />
-          <TextField label="Model" value={formValues.model} onChange={handleFieldChange('model')} />
-          <TextField label="CASH Level" type="number" value={formValues.cash_level} onChange={handleFieldChange('cash_level')} />
-          <TextField label="Branch ID" type="number" value={formValues.branch_id} onChange={handleFieldChange('branch_id')} />
+          <TextField label="Title" value={formValues.title} onChange={handleFieldChange('title')} />
+          <TextField label="Atm ID" type="number" value={formValues.atm_id} onChange={handleFieldChange('atm_id')} />
+          <TextField label="Technician ID" type="number" value={formValues.technician_id} onChange={handleFieldChange('technician_id')} />
           <TextField select label="Status" value={formValues.status} onChange={handleFieldChange('status')}>
             {STATUS_OPTIONS.map((option) => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
+          </TextField>
+          <TextField select label="Priority" value={formValues.priority} onChange={handleFieldChange('priority')}>
+            {PRIORITY_OPTIONS.map((option) => (
               <MenuItem key={option} value={option}>{option}</MenuItem>
             ))}
           </TextField>
@@ -172,12 +179,16 @@ function AtmDataGrid({ onSuccess ,role}) {
       <DialogTitle>Edit Atm</DialogTitle>
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1, minWidth: 300}}>
-          <TextField label="Serial Number" value={formValues.serial_number} onChange={handleFieldChange('serial_number')} />
-          <TextField label="Model" value={formValues.model} onChange={handleFieldChange('model')} />
-          <TextField label="CASH Level" type="number" value={formValues.cash_level} onChange={handleFieldChange('cash_level')} />
-          <TextField label="Branch ID" type="number" value={formValues.branch_id} onChange={handleFieldChange('branch_id')} />
+          <TextField label="Title" value={formValues.title} onChange={handleFieldChange('title')} />
+          <TextField label="Atm ID" type="number" value={formValues.atm_id} onChange={handleFieldChange('atm_id')} />
+          <TextField label="Technician ID" type="number" value={formValues.technician_id} onChange={handleFieldChange('technician_id')} />
           <TextField select label="Status" value={formValues.status} onChange={handleFieldChange('status')}>
             {STATUS_OPTIONS.map((option) => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
+          </TextField>
+          <TextField select label="Priority" value={formValues.priority} onChange={handleFieldChange('priority')}>
+            {PRIORITY_OPTIONS.map((option) => (
               <MenuItem key={option} value={option}>{option}</MenuItem>
             ))}
           </TextField>
@@ -186,11 +197,11 @@ function AtmDataGrid({ onSuccess ,role}) {
             <DialogActions>
               <Button onClick={() => {
                 setFormValues({
-                                serial_number: '',
-                                model: '',
-                                cash_level: '',
-                                branch_id: '',
-                                status: 'Offline',
+                                 title: '',
+                                 priority: 'Low',
+                                 atm_id: '',
+                                 technician_id: '',
+                                 status: 'Pending',
                             })
                 seteditDialogOpen(false)}}>Cancel</Button>
               <Button variant="contained" onClick={handleEdit}>Edit</Button>
@@ -201,4 +212,4 @@ function AtmDataGrid({ onSuccess ,role}) {
   );
 }
 
-export default AtmDataGrid; 
+export default CallDataGrid; 

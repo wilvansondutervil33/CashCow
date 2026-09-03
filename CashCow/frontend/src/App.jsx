@@ -7,8 +7,10 @@ import AppHeader from './components/layout/AppHeader.jsx'
 // import {mockDiscrepancies} from './mockData/discrepancies.js'
 
 import LoginForm from './components/auth/LoginForm.jsx';
-// import AtmDataGrid from './components/atms/AtmDataGrid.jsx';
+import BranchDataGrid from './components/branches/BranchDataGrid.jsx';
 import AtmDataGrid from './components/atms/atmDataGrid.jsx';
+import DiagnosticDataGrid from './components/diagnostic/DiagnosticDataGrid.jsx';
+import CallDataGrid from './components/calls/CallDataGrid.jsx';
 //import DiscrepancyDataGrid from './components/missions/DiscrepancyDataGrid.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 
@@ -25,14 +27,26 @@ function Dashboard(){
           Fleet Overview
         </Typography>
          <Box sx={{ mb: 4}}>
-          <AtmDataGrid onSuccess={setNotification} role={user?.role}/>
+          <BranchDataGrid onSuccess={setNotification} role={user?.role}/>
         </Box>
-        {/*<Typography variant="h5" component="h2" gutterBottom>
-          Co-Location Discrepancies
+        <Typography variant="h5" component="h2" gutterBottom>
+          ATMS
         </Typography>
         <Box sx={{ mb: 4}}>
-          <DiscrepancyDataGrid />
-        </Box> */}
+          <AtmDataGrid onSuccess={setNotification} role={user?.role}/>
+        </Box>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Reports
+        </Typography>
+        <Box sx={{ mb: 4}}>
+          <DiagnosticDataGrid onSuccess={setNotification} role={user?.role}/>
+        </Box>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Service Calls
+        </Typography>
+        <Box sx={{ mb: 4}}>
+          <CallDataGrid onSuccess={setNotification} role={user?.role}/>
+        </Box>
       </Container>
     </>
   );

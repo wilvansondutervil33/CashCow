@@ -1,7 +1,7 @@
 from pydantic import BaseModel, ConfigDict
 
 class CallRead(BaseModel):
-
+    id:int
     title: str 
     priority: str
     status: str

@@ -6,12 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.dependencies import get_db, get_current_user, require_role
 from app.models import DiagnosticReport, User, UserRole
-from app.schemas.diagnostic import DiscrepancyCreate, DiscrepancyRead
+from app.schemas.diagnostic import DiscrepancyCreate, DiscrepancyRead, DiscrepancyUpdate
 
 #our FastAPI router for the /robots endpoints. The prefix argument means that
 #  all routes defined in this router will be prefixed with /robots, and the 
 # tags argument is used for documentation purposes in the OpenAPI schema.
-router = APIRouter(prefix="/diagnosticrepots", tags=["diagnosticrepots"])
+router = APIRouter(prefix="/diagnosticreports", tags=["diagnosticreports"])
 
 
 @router.get("", response_model=list[DiscrepancyRead])
@@ -42,3 +42,14 @@ async def create_call(payload: DiscrepancyCreate, db: AsyncSession = Depends(get
     await db.refresh(report)
     return report
 
+@router.put("/{report_id}", response_model=DiscrepancyRead, status_code=status.HTTP_202_ACCEPTED)
+async def update_report(report_id: int, payload: DiscrepancyUpdate, db: AsyncSession = Depends(get_db),
+                       _: User = Depends(require_role(UserRole.OPERATION_ADMIN, UserRole.FIELD_TECHNICIAN))) -> DiagnosticReport:
+    report = await db.get(DiagnosticReport, report_id)
+    report.call_id = payload.call_id
+    report.file_url = payload.file_url
+    report.notes = payload.notes
+    db.add(report)
+    await db.commit()
+    await db.refresh(report)
+    return report

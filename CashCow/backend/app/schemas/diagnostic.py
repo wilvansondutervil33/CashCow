@@ -2,7 +2,7 @@ from pydantic import BaseModel, ConfigDict
 from datetime import datetime
 
 class DiscrepancyRead(BaseModel):
-
+    id : int
     call_id: int
     file_url: str
     notes: str
@@ -14,4 +14,7 @@ class DiscrepancyCreate(BaseModel):
     file_url: str
     notes: str
     model_config = ConfigDict(from_attributes=True)
+
+class DiscrepancyUpdate(DiscrepancyCreate):
+    ''
 
