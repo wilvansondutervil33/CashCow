@@ -1,5 +1,5 @@
 from decimal import Decimal
-
+from fastapi.responses import Response
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -57,11 +57,10 @@ async def update_call(call_id: int, payload: CallUpdate, db: AsyncSession = Depe
     await db.refresh(call)
     return call
 
-@router.delete("/{call_id}", response_model=CallDelete, status_code=status.HTTP_202_ACCEPTED)
+@router.delete("/{call_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_call(call_id: int, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))):
     call = await db.get(ServiceCall, call_id)
-    db.delete(call)
+    await db.delete(call)
     await db.commit()
-    await db.refresh(call)
-    return call
+    return Response(status_code=204)

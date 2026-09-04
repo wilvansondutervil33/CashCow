@@ -81,5 +81,5 @@ async def delete_robot(atm_id: int, db: AsyncSession = Depends(get_db),
         )
     await db.delete(atm)
     await db.commit()
-    await db.refresh()
-    return Response(status_code=204, content = atm)
+    #await db.refresh(atm)
+    return Response(status_code=204)

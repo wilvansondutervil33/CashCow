@@ -85,7 +85,9 @@ DOCKER
 
 31. aws s3 sync dist/ s3://cashcow-frontend-wd2478 --delete
 
-32. aws lambda update-function-code --function-name <your lamba name> --zip-file fileb://lambda_deployment.zip
+32. aws lambda update-function-code --function-name cashcow-api --zip-file fileb://lambda_deployment.zip
+    aws cloudfront create-invalidation --distribution-id EGS5FCF7CC6VQ --paths "/*"
+
 
 33. curl https://jr3cmm3tw5aulu7635v2i3wv7i0iraqg.lambda-url.us-east-2.on.aws/health
 

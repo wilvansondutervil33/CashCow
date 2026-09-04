@@ -1,5 +1,5 @@
 from decimal import Decimal
-
+from fastapi.responses import Response
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -57,11 +57,10 @@ async def update_branch(branch_id: int, payload: BranchUpdate, db: AsyncSession 
     await db.refresh(branch)
     return branch
 
-@router.delete("/{branch_id}", response_model=BranchDelete, status_code=status.HTTP_202_ACCEPTED)
+@router.delete("/{branch_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_branch(branch_id: int, db: AsyncSession = Depends(get_db),
                        _: User = Depends(require_role(UserRole.OPERATION_ADMIN))):
     branch = await db.get(Branch, branch_id)
-    db.delete(branch)
+    await db.delete(branch)
     await db.commit()
-    await db.refresh(branch)
-    return branch
+    return Response(status_code=204)
