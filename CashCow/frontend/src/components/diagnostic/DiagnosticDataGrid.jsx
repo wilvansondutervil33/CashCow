@@ -8,10 +8,10 @@ import apiClient from '../../api/client.js';
 
 //defines our DataGrid columns and maps them to our backend API response data
 const baseColumns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'call_id', headerName: 'Call ID', width: 150 , type: 'number'},
-  { field: 'file_url', headerName: 'File URL', width: 160 },
-  { field: 'notes', headerName: 'Notes', width: 120 }]
+  { field: 'id', headerName: 'ID', width: 70  },
+  { field: 'call_id', headerName: 'Call ID', width: 150 , type: 'number' },
+  { field: 'file_url', headerName: 'File URL', width: 160 , flex: 1 },
+  { field: 'notes', headerName: 'Notes', width: 120 , flex: 1 }]
 
 
 //local state variables for tracking table rows, loading status, and network errors

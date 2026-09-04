@@ -1,17 +1,13 @@
 import { Container, Typography, Box} from '@mui/material'
 import {useState} from 'react'
 import AppHeader from './components/layout/AppHeader.jsx'
-// import AtmList from './components/atms/AtmList.jsx'
-// import DiscrepancyList from './components/missions/DiscrepancyList.jsx'
-// import { mockRobots } from './mockData/robots.js'
-// import {mockDiscrepancies} from './mockData/discrepancies.js'
 
 import LoginForm from './components/auth/LoginForm.jsx';
 import BranchDataGrid from './components/branches/BranchDataGrid.jsx';
 import AtmDataGrid from './components/atms/atmDataGrid.jsx';
 import DiagnosticDataGrid from './components/diagnostic/DiagnosticDataGrid.jsx';
 import CallDataGrid from './components/calls/CallDataGrid.jsx';
-//import DiscrepancyDataGrid from './components/missions/DiscrepancyDataGrid.jsx';
+import BusinessDataGrid from './components/business/BusinessDataGrid.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
 
 //a main dashboard component that renders the application header and robot data grid to authenticated users
@@ -46,6 +42,9 @@ function Dashboard(){
         </Typography>
         <Box sx={{ mb: 4}}>
           <CallDataGrid onSuccess={setNotification} role={user?.role}/>
+        </Box>
+        <Box sx={{ mb: 4}}>
+          <BusinessDataGrid onSuccess={setNotification}/>
         </Box>
       </Container>
     </>

@@ -3,17 +3,24 @@ import { DataGrid } from '@mui/x-data-grid';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Link from '@mui/material/Link';
 import { Alert, Box, CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from '@mui/material';
 import apiClient from '../../api/client.js';
 
 
 //defines our DataGrid columns and maps them to our backend API response data
 const baseColumns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'name', headerName: 'Name', width: 150 },
-  { field: 'location_region', headerName: 'Location Region', width: 160 },
-  { field: 'capacity', headerName: 'Capacity', width: 120, type: 'number' },
-  { field: 'supervisor_id', headerName: 'Supervisor ID', width: 110, type: 'number' }]
+  { field: 'id', headerName: 'ID', width: 70 , flex: 1 },
+  { field: 'name', headerName: 'Name', width: 150 , flex: 1, 
+    // renderCell: (params) => (
+    //   <Link href={`/branches/${params.row.id}`} underline="hover">
+    //     {params.value}
+    //   </Link>
+    // )
+  },
+  { field: 'location_region', headerName: 'Location Region', width: 160 , flex: 1 },
+  { field: 'capacity', headerName: 'Capacity', width: 120, type: 'number' , flex: 1 },
+  { field: 'supervisor_id', headerName: 'Supervisor ID', width: 110, type: 'number' , flex: 1 }]
 
 
 
@@ -137,7 +144,7 @@ function BranchDataGrid({ onSuccess ,role}) {
   return (
     <Box>
        {role == 'Operations Admin' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Branch</Button>)}
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box sx={{ height: 400, width: '100%', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
       <DataGrid rows={branches} columns={columns} getRowId={(row) => row.id} />
     </Box>
 

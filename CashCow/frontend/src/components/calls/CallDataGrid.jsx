@@ -9,12 +9,12 @@ import apiClient from '../../api/client.js';
 
 //defines our DataGrid columns and maps them to our backend API response data
 const baseColumns = [
-  { field: 'id', headerName: 'ID', width: 70 , type: 'number'},
-  { field: 'title', headerName: 'Title', width: 150 },
-  { field: 'priority', headerName: 'Priority', width: 160 },
-  { field: 'atm_id', headerName: 'Atm ID', width: 120, type: 'number' },
-  { field: 'status', headerName: 'Status', width: 130 },
-  { field: 'technician_id', headerName: 'Technician ID', width: 110, type: 'number' }]
+  { field: 'id', headerName: 'ID', width: 70 , type: 'number', flex: 1 },
+  { field: 'title', headerName: 'Title', width: 150 , flex: 1 },
+  { field: 'priority', headerName: 'Priority', width: 160 , flex: 1 },
+  { field: 'atm_id', headerName: 'Atm ID', width: 120, type: 'number' , flex: 1 },
+  { field: 'status', headerName: 'Status', width: 130 , flex: 1 },
+  { field: 'technician_id', headerName: 'Technician ID', width: 110, type: 'number' , flex: 1 }]
 
 
 
@@ -75,7 +75,6 @@ function CallDataGrid({ onSuccess ,role}) {
         const response = await apiClient.get('/servicecalls');
         setCalls(response.data);
         setError(null);
-        console.log(response)
       } catch {
           setError('Could not load fleet data.');
       } finally {

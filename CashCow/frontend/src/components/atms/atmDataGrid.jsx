@@ -9,12 +9,12 @@ import apiClient from '../../api/client.js';
 
 //defines our DataGrid columns and maps them to our backend API response data
 const baseColumns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'serial_number', headerName: 'Serial Number', width: 150 },
-  { field: 'model', headerName: 'Model', width: 160 },
-  { field: 'cash_level', headerName: 'CASH', width: 120, type: 'number' },
-  { field: 'status', headerName: 'Status', width: 130 },
-  { field: 'branch_id', headerName: 'Branch ID', width: 110, type: 'number' }]
+  { field: 'id', headerName: 'ID', width: 70 , flex: 1 },
+  { field: 'serial_number', headerName: 'Serial Number', width: 150 , flex: 1 },
+  { field: 'model', headerName: 'Model', width: 160 , flex: 1 },
+  { field: 'cash_level', headerName: 'CASH', width: 120, type: 'number' , flex: 1 },
+  { field: 'status', headerName: 'Status', width: 130 , flex: 1 },
+  { field: 'branch_id', headerName: 'Branch ID', width: 110, type: 'number' , flex: 1 }]
 
 
 

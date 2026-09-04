@@ -24,7 +24,7 @@ router = APIRouter(prefix="/business", tags=["business"])
 async def find_colocation_discrepancies_orm(db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)) -> list[ServiceCall]:
 
     statement = (
-        select(ServiceCall)
+        select(ServiceCall) 
         .join(Atm, Atm.id == ServiceCall.atm_id)
         .join(Technician, Technician.id == ServiceCall.technician_id)
         .where(Atm.branch_id != Technician.branch_id)
@@ -83,7 +83,7 @@ async def maintenance_flags(db: AsyncSession = Depends(get_db), _: User = Depend
     result = await db.execute(statement)
     return list(result.scalars().all())
 
-@router.get("/report", response_model=list[TechnicianRead])
+@router.get("/report/{supervisor_id}", response_model=list[TechnicianRead])
 async def reporting_lines(supervisor_id: int, db: AsyncSession = Depends(get_db), _: User = Depends(get_current_user)) -> list[Technician]:
     statement = (
                 select(Technician)

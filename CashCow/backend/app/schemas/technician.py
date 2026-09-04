@@ -1,9 +1,8 @@
 from pydantic import BaseModel, ConfigDict
-from datetime import datetime
 
 class TechnicianRead(BaseModel):
 
     id: int
     name: str
-    branch_id: str
+    branch_id: int
     model_config = ConfigDict(from_attributes=True)
