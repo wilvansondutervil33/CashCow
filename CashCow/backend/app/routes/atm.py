@@ -8,13 +8,10 @@ from app.dependencies import get_db, get_current_user, require_role
 from app.models import Atm, ATMStatus, User, UserRole
 from app.schemas.atm import ATMCreate, ATMRead, ATMUpdate, ATMDelete
 
-#our FastAPI router for the /robots endpoints. The prefix argument means that
-#  all routes defined in this router will be prefixed with /robots, and the 
-# tags argument is used for documentation purposes in the OpenAPI schema.
+
 router = APIRouter(prefix="/atms", tags=["atms"])
 
 
-#our GET /robots endpoint, which returns a list of robots, optionally filtered by battery level.
 @router.get("", response_model=list[ATMRead])
 async def list_atms(
     max_cash: Decimal | None = Query(

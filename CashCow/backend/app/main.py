@@ -4,7 +4,7 @@ from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import IntegrityError
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import atm, auth, branch, call, diagnostic, business
+from app.routes import atm, auth, branch, call, diagnostic, business, user
 
 FRONTEND_ORIGIN = os.environ.get("FRONTEND_ORIGIN", "http://localhost:5173")
 #set up the FastAPI application with a title, description, and version. 
@@ -33,6 +33,7 @@ app.include_router(call.router)
 app.include_router(diagnostic.router)
 app.include_router(auth.router) 
 app.include_router(business.router) 
+app.include_router(user.router)
 
 #A simple health check endpoint to verify that the API is running.
 @app.get("/health", tags=["health"])

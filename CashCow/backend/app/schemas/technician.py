@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 
-class TechnicianRead(BaseModel):
+class TechnicianRead(BaseModel): 
 
     id: int
     name: str

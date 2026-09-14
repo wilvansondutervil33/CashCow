@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { GridActionsCellItem } from '@mui/x-data-grid';
 import EditIcon from '@mui/icons-material/Edit';
-import { Alert, Box, CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from '@mui/material';
+import { Alert, Box,Typography, CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from '@mui/material';
 import apiClient from '../../api/client.js';
 
 
@@ -113,7 +113,10 @@ function DiagnosticDataGrid({ onSuccess ,role}) {
   //loads data grid component if all goes well
   return (
     <Box>
-       {role != 'AUDITOR' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Report</Button>)}
+      <Typography variant="h6" component="h1">
+        Diagnostic Reports
+      </Typography>
+      {role != 'AUDITOR' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Report</Button>)}
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid rows={diagnostic} columns={columns} getRowId={(row) => row.id} />
     </Box>

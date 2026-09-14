@@ -12,11 +12,11 @@ import apiClient from '../../api/client.js';
 const baseColumns = [
   { field: 'id', headerName: 'ID', width: 70 , flex: 1 },
   { field: 'name', headerName: 'Name', width: 150 , flex: 1, 
-    // renderCell: (params) => (
-    //   <Link href={`/branches/${params.row.id}`} underline="hover">
-    //     {params.value}
-    //   </Link>
-    // )
+    renderCell: (params) => (
+      <Link href={`/branches/${params.row.id}`} underline="hover">
+        {params.value}
+      </Link>
+    )
   },
   { field: 'location_region', headerName: 'Location Region', width: 160 , flex: 1 },
   { field: 'capacity', headerName: 'Capacity', width: 120, type: 'number' , flex: 1 },

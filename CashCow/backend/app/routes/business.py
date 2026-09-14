@@ -89,7 +89,7 @@ async def reporting_lines(supervisor_id: int, db: AsyncSession = Depends(get_db)
                 select(Technician)
                 .join(ServiceCall, ServiceCall.technician_id == Technician.id)
                 .join(Branch, Branch.id == Technician.branch_id)
-                .where(
+                .where( 
                         ServiceCall.status.not_in(["Completed", "Failed"]),
                         Branch.supervisor_id == supervisor_id,
                     )

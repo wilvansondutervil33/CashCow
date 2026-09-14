@@ -24,7 +24,7 @@ const STATUS_OPTIONS = ['Operational', 'Low-Cash', 'Maintenance', 'Offline']
 
 //local state variables for tracking table rows, loading status, and network errors
 //to track the lifecycle of the async API request so the UI can render appropriately
-function AtmDataGrid({ onSuccess ,role}) {
+function AtmDataGrid({ onSuccess ,role,branch_id}) {
   const [atms, setAtms] = useState([]);
   const [id, setId] = useState(0)
   const [loading, setLoading] = useState(true);
@@ -71,7 +71,7 @@ function AtmDataGrid({ onSuccess ,role}) {
       setLoading(true);
       try {
         const response = await apiClient.get('/atms');
-        setAtms(response.data);
+        setAtms(response.data.filter(n => n.branch_id == parseInt(branch_id)));
         setError(null);
       } catch {
           setError('Could not load fleet data.');
