@@ -93,7 +93,7 @@ function AppHeader({username, role, onLogout, children}) {
             </ListItem>
           </Link>
 
-          <Link href="/users" sx={{ textDecoration: 'none', color: 'Black'}}>
+          {role == 'Operations Admin' && <Link href="/users" sx={{ textDecoration: 'none', color: 'Black'}}>
             <ListItem disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -102,7 +102,7 @@ function AppHeader({username, role, onLogout, children}) {
                   <ListItemText primary="Users" />
                 </ListItemButton>            
             </ListItem>
-          </Link>
+          </Link>}
 
         </List>
 

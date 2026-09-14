@@ -1,13 +1,14 @@
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import apiClient from '../../api/client.js';
 import AtmDataGrid from '../atms/atmDataGrid';
 import { CircularProgress, Container, Typography, Box, Alert} from '@mui/material';
 
 
 function SigleBranch({ onSuccess , role}){
-    const { id } = useParams()
+    const { id } = useParams();
+    const navigate = useNavigate();
     const [branch, setBranch] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -23,6 +24,7 @@ function SigleBranch({ onSuccess , role}){
         setError(null);
       } catch {
           setError('Could not load fleet data.');
+          navigate('/404', { replace: true });
       } finally {
           setLoading(false);
       }

@@ -34,12 +34,17 @@ function Dashboard(){
               </Box>
               
             </Container>
-          }/>
+          } exact={true}/>
           <Route path='/branches/:id' element = {<SigleBranch onSuccess={setNotification} role={user?.role} />} exact={true}/>
           <Route path='/analytics' element = {<AnalyticsPage onSuccess={setNotification} role={user?.role} />} exact={true}/>
           <Route path='/servicecalls' element = {<CallDataGrid onSuccess={setNotification} role={user?.role} />} exact={true}/>
           <Route path='/reports' element = {<DiagnosticDataGrid onSuccess={setNotification} role={user?.role} />} exact={true}/>
-          <Route path='/users' element = {<UserDataGrid onSuccess={setNotification} role={user?.role} />} exact={true}/>
+          {user?.role == 'Operations Admin' && <Route path='/users' element = {<UserDataGrid onSuccess={setNotification} role={user?.role} />} exact={true}/>}
+          <Route path='*' element = {
+            <Typography variant="h5" component="h2" gutterBottom>
+                404
+              </Typography>
+          }/>
 
           
         </Routes>
