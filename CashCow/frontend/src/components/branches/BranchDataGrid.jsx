@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Link from '@mui/material/Link';
 import { Alert, Box, CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from '@mui/material';
 import apiClient from '../../api/client.js';
+import PieChart from '../chart/piechart.jsx';
 
 
 //defines our DataGrid columns and maps them to our backend API response data
@@ -29,6 +30,7 @@ const baseColumns = [
 //to track the lifecycle of the async API request so the UI can render appropriately
 function BranchDataGrid({ onSuccess ,role}) {
   const [branches, setBranches] = useState([]);
+  const [atms, setAtms] = useState([]);
   const [id, setId] = useState(0)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -82,8 +84,22 @@ function BranchDataGrid({ onSuccess ,role}) {
       }
     }
 
+    async function fetchAtms() {
+      setLoading(true);
+      try {
+        const response = await apiClient.get('/atms');
+        setAtms(response.data);
+        setError(null);
+      } catch {
+          setError('Could not load fleet data.');
+      } finally {
+          setLoading(false);
+      }
+    }
+
      useEffect(() => {
       fetchBranches();
+      fetchAtms();
     }, []);
 
     const handleFieldChange = (field) => (event) => {
@@ -143,6 +159,7 @@ function BranchDataGrid({ onSuccess ,role}) {
   //loads data grid component if all goes well
   return (
     <Box>
+      <PieChart data={atms}/>
        {role == 'Operations Admin' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Branch</Button>)}
     <Box sx={{ height: 400, width: '100%', display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
       <DataGrid rows={branches} columns={columns} getRowId={(row) => row.id} />

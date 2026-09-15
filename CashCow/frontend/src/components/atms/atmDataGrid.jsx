@@ -5,6 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Alert, Box, CircularProgress, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField } from '@mui/material';
 import apiClient from '../../api/client.js';
+import PieChart from '../chart/piechart.jsx';
 
 
 //defines our DataGrid columns and maps them to our backend API response data
@@ -141,7 +142,8 @@ function AtmDataGrid({ onSuccess ,role,branch_id}) {
   //loads data grid component if all goes well
   return (
     <Box>
-       {role == 'Operations Admin' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Atm</Button>)}
+      {atms.length > 0 && <PieChart data={atms}/>}
+      {role == 'Operations Admin' && (<Button variant="outlined" sx={{ mb: 2}} onClick={() => setaddDialogOpen(true)}>Add Atm</Button>)}
     <Box sx={{ height: 400, width: '100%' }}>
       <DataGrid rows={atms} columns={columns} getRowId={(row) => row.id} />
     </Box>
