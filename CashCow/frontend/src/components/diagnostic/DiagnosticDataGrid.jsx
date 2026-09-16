@@ -126,7 +126,7 @@ function DiagnosticDataGrid({ onSuccess ,role}) {
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1, minWidth: 300}}>
           <TextField label="Call ID" type="number" value={formValues.call_id} onChange={handleFieldChange('call_id')} />
-          <TextField label="File URL" value={formValues.file_url} onChange={handleFieldChange('file_url')} />
+          <TextField label="" type='file' value={formValues.file_url} onChange={handleFieldChange('file_url')} />
           <TextField label="Notes" value={formValues.notes} onChange={handleFieldChange('notes')} />
           
           
@@ -144,7 +144,7 @@ function DiagnosticDataGrid({ onSuccess ,role}) {
       <DialogContent>
         <Stack spacing={2} sx={{ mt: 1, minWidth: 300}}>
           <TextField label="Call ID" type="number" value={formValues.call_id} onChange={handleFieldChange('call_id')} />
-          <TextField label="File URL" value={formValues.file_url} onChange={handleFieldChange('file_url')} />
+          <TextField label="" type='file' value={formValues.file_url} onChange={handleFieldChange('file_url')} />
           <TextField label="Notes" value={formValues.notes} onChange={handleFieldChange('notes')} />
         </Stack>
       </DialogContent>
