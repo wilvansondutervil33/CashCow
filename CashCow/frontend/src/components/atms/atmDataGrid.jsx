@@ -101,7 +101,9 @@ function AtmDataGrid({ onSuccess ,role,branch_id}) {
             onSuccess(`Atm ${formValues.serial_number} created.`);
             await fetchAtms(); //see the table data refreshed with the new robot
         } catch {
-            //a real app would surface this inline in the dialog
+            setaddDialogOpen(false);
+            onSuccess("Can't create ATM with these values")
+            await fetchAtms();
         }
     }
 

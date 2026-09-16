@@ -46,7 +46,7 @@ function SigleBranch({ onSuccess , role}){
                     {branch.name}
                 </Typography>
                 <Box sx={{ mb: 4}}>
-                    <AtmDataGrid onSuccess={setNotification} role={role} branch_id= {id}/>
+                    <AtmDataGrid onSuccess={onSuccess} role={role} branch_id= {id}/>
                 </Box>
             </Container>
         </>

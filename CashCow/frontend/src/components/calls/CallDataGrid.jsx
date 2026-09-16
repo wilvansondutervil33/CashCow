@@ -102,7 +102,8 @@ function CallDataGrid({ onSuccess ,role}) {
             onSuccess(`Call ${formValues.title} created.`);
             await fetchCalls(); //see the table data refreshed with the new robot
         } catch {
-            //a real app would surface this inline in the dialog
+            setaddDialogOpen(false);
+            onSuccess('call not added')
         }
     }
 
